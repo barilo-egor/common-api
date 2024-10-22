@@ -1,0 +1,49 @@
+plugins {
+    id 'java'
+    id 'groovy'
+    id 'maven-publish'
+}
+
+group = 'tgb.cryptoexchange'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation 'org.apache.groovy:groovy:4.0.14'
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.register('sourcesJar', Jar) {
+    from sourceSets.main.allJava
+    archiveClassifier = 'sources'
+}
+
+tasks.register('javadocJar', Jar) {
+    from tasks.javadoc
+    archiveClassifier = 'javadoc'
+}
+
+publishing {
+    publications {
+        create('mavenJava', MavenPublication) {
+            from components.java
+
+            artifact tasks.named('sourcesJar').get()
+            artifact tasks.named('javadocJar').get()
+
+            artifactId = 'common-api'
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
