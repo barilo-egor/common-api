@@ -1,6 +1,7 @@
 package tgb.cryptoexchange.web;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -36,6 +37,7 @@ public class ApiResponse<T> {
      * Класс описывающий ошибку при обработке запроса
      */
     @Data
+    @Builder
     public static class Error {
 
         private String message;
