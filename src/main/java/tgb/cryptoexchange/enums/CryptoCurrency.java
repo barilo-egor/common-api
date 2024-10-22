@@ -1,4 +1,4 @@
-package tgb.cryptoexchange;
+package tgb.cryptoexchange.enums;
 
 /**
  * Константы криптовалют
