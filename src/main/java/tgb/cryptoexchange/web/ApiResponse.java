@@ -3,7 +3,7 @@ package tgb.cryptoexchange.web;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
-
+//test
 /**
  * Класс для API ответов
  * @param <T> тип данных ответа
