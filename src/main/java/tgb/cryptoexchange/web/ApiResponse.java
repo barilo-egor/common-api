@@ -1,8 +1,10 @@
 package tgb.cryptoexchange.web;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 //test
 /**
  * Класс для API ответов
@@ -28,12 +30,6 @@ public class ApiResponse<T> {
     private Error error;
 
     /**
-     * Создание пустого объекта ответа
-     */
-    public ApiResponse() {
-    }
-
-    /**
      * Класс описывающий ошибку при обработке запроса
      */
     @Data
@@ -41,6 +37,19 @@ public class ApiResponse<T> {
     public static class Error {
 
         private String message;
+
+        private ErrorCode code;
+
+        /**
+         * Перечисление для кодов ошибок
+         */
+        @AllArgsConstructor
+        @Getter
+        public enum ErrorCode {
+            ENTITY_NOT_FOUND(0);
+
+            private final int code;
+        }
     }
 
     /**
