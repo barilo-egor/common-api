@@ -1,10 +1,16 @@
 package tgb.cryptoexchange.web;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+
+import java.io.IOException;
 //test
 /**
  * Класс для API ответов
@@ -38,6 +44,7 @@ public class ApiResponse<T> {
 
         private String message;
 
+        @JsonSerialize(using = ErrorCode.Serializer.class)
         private ErrorCode code;
 
         /**
@@ -49,6 +56,16 @@ public class ApiResponse<T> {
             ENTITY_NOT_FOUND(0);
 
             private final int code;
+
+            public static class Serializer extends JsonSerializer<Error> {
+
+                @Override
+                public void serialize(Error error, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
+                        throws IOException {
+                    jsonGenerator.writeString(String.valueOf(error.getCode().getCode()));
+                }
+
+            }
         }
     }
 
