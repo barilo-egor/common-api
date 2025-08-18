@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -44,6 +45,11 @@ public class ApiResponse<T> {
 
         private String message;
 
+        @Schema(
+                implementation = Integer.class,
+                description = "Код ошибки",
+                example = "1"
+        )
         @JsonSerialize(using = ErrorCode.Serializer.class)
         private ErrorCode code;
 
