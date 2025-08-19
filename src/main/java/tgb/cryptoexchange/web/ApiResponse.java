@@ -41,6 +41,7 @@ public class ApiResponse<T> {
      */
     @Data
     @Builder
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Error {
 
         private String message;
