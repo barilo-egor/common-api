@@ -16,13 +16,22 @@ public class ResponseLoggingAspect {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Around("@annotation(logResponseBody)")
-    public Object logResponse(ProceedingJoinPoint joinPoint, LogResponseBody logResponseBody) throws Throwable {
+    public Object logMethodResponse(ProceedingJoinPoint joinPoint, LogResponseBody logResponseBody) throws Throwable {
+        return log(joinPoint, logResponseBody.level());
+    }
+
+    @Around("@within(logResponseBody)")
+    public Object logClassResponse(ProceedingJoinPoint joinPoint, LogResponseBody logResponseBody) throws Throwable {
+        return log(joinPoint, logResponseBody.level());
+    }
+
+    private Object log(ProceedingJoinPoint joinPoint, LogResponseBody.LogLevel level) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         String methodName = signature.getMethod().getName();
 
         Object result = joinPoint.proceed();
 
-        switch (logResponseBody.level()) {
+        switch (level) {
         case TRACE -> log.trace("Ответ метода {}: {}", methodName, objectMapper.writeValueAsString(result));
         case DEBUG -> log.debug("Ответ метода {}: {}", methodName, objectMapper.writeValueAsString(result));
         case INFO -> log.info("Ответ метода {}: {}", methodName, objectMapper.writeValueAsString(result));
@@ -32,5 +41,4 @@ public class ResponseLoggingAspect {
 
         return result;
     }
-
 }
