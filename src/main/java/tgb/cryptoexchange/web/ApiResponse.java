@@ -6,10 +6,7 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 import java.io.IOException;
 //test
@@ -41,6 +38,8 @@ public class ApiResponse<T> {
      */
     @Data
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Error {
 
