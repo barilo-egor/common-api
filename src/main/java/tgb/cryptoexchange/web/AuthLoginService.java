@@ -23,9 +23,9 @@ public class AuthLoginService {
 
     private Token token = null;
 
-    public AuthLoginService(@Value("${tgb.service.auth.url}") String authUrl,
-                            @Value("${tgb.service.auth.username}") String username,
-                            @Value("${tgb.service.auth.password}") String password) {
+    public AuthLoginService(@Value("${tgb.service.auth.url:null}") String authUrl,
+                            @Value("${tgb.service.auth.username:null}") String username,
+                            @Value("${tgb.service.auth.password:null}") String password) {
         this.webClient = WebClient.builder().baseUrl(authUrl).build();
         this.username = username;
         this.password = password;
