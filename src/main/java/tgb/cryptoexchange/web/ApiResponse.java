@@ -63,14 +63,12 @@ public class ApiResponse<T> {
 
             private final int code;
 
-            public static class Serializer extends JsonSerializer<Error> {
+            public static class Serializer extends JsonSerializer<ErrorCode> {
 
                 @Override
-                public void serialize(Error error, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
-                        throws IOException {
-                    jsonGenerator.writeString(String.valueOf(error.getCode().getCode()));
+                public void serialize(ErrorCode errorCode, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+                    jsonGenerator.writeString(errorCode.toString());
                 }
-
             }
         }
     }
