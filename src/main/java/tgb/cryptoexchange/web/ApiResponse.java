@@ -59,7 +59,8 @@ public class ApiResponse<T> {
         @AllArgsConstructor
         @Getter
         public enum ErrorCode {
-            ENTITY_NOT_FOUND(0);
+            ENTITY_NOT_FOUND(0),
+            NON_UNIQUE_RESULT(1);
 
             private final int code;
 
