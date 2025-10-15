@@ -36,7 +36,7 @@ public class AuthLoginService {
             token = getToken();
         } else {
             LocalDateTime now = LocalDateTime.now();
-            if (token.expires.isAfter(now.minusMinutes(5))) {
+            if (token.expires.isBefore(now.minusMinutes(5))) {
                 token = getToken();
             }
         }
