@@ -19,7 +19,7 @@ public abstract class ApiController {
      */
     @ExceptionHandler
     public ResponseEntity<ApiResponse<Object>> handleException(Exception ex){
-        log.debug("Необработнная ошибка: ", ex);
-        return new ResponseEntity<>(ApiResponse.error(ApiResponse.Error.builder().message(ex.getMessage()).build()), HttpStatus.OK);
+        log.error("Необработанная ошибка: ", ex);
+        return new ResponseEntity<>(ApiResponse.error(ApiResponse.Error.builder().message(ex.getMessage()).build()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

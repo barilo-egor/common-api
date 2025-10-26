@@ -59,7 +59,8 @@ public class ApiResponse<T> {
         @AllArgsConstructor
         @Getter
         public enum ErrorCode {
-            ENTITY_NOT_FOUND(0);
+            ENTITY_NOT_FOUND(0),
+            NON_UNIQUE_RESULT(1);
 
             private final int code;
 
@@ -96,6 +97,20 @@ public class ApiResponse<T> {
         ApiResponse<T> apiResponse = new ApiResponse<>();
         apiResponse.setSuccess(false);
         apiResponse.setError(error);
+        return apiResponse;
+    }
+
+    /**
+     * Метод для создания ответа с ошибкой
+     * @param code код ошибки
+     * @param message сообщение ошибки
+     * @return объект ответа с ошибкой
+     * @param <T> тип данных
+     */
+    public static <T> ApiResponse<T> error(Error.ErrorCode code, String message) {
+        ApiResponse<T> apiResponse = new ApiResponse<>();
+        apiResponse.setSuccess(false);
+        apiResponse.setError(Error.builder().code(code).message(message).build());
         return apiResponse;
     }
 }
