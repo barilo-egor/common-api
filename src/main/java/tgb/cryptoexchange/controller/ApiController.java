@@ -3,8 +3,12 @@ package tgb.cryptoexchange.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import tgb.cryptoexchange.web.ApiResponse;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Базовый контроллер для REST API
@@ -21,5 +25,17 @@ public abstract class ApiController {
     public ResponseEntity<ApiResponse<Object>> handleException(Exception ex){
         log.error("Необработанная ошибка: ", ex);
         return new ResponseEntity<>(ApiResponse.error(ApiResponse.Error.builder().message(ex.getMessage()).build()), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ApiResponse<Object>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        StringBuilder errors = new StringBuilder();
+        errors.append("Fields errors: ");
+        ex.getBindingResult().getFieldErrors().forEach(error ->
+                errors.append("field ").append(error.getField()).append(" ").append(error.getDefaultMessage()).append(", ")
+        );
+        errors.deleteCharAt(errors.length() - 1);
+        errors.deleteCharAt(errors.length() - 1);
+        return new ResponseEntity<>(ApiResponse.error(ApiResponse.Error.builder().message(errors.toString()).build()), HttpStatus.BAD_REQUEST);
     }
 }
