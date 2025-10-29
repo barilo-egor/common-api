@@ -7,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import tgb.cryptoexchange.exception.QuietException;
+import tgb.cryptoexchange.exception.ServiceUnavailableException;
 import tgb.cryptoexchange.web.ApiResponse;
 
 import java.util.HashMap;
@@ -38,6 +39,16 @@ public abstract class ApiController {
     @ExceptionHandler
     public ResponseEntity<ApiResponse<Object>> handleQuiteException(QuietException ex) {
         return new ResponseEntity<>(ApiResponse.error(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * Обработка ошибок с возвращением 503 статуса.
+     * @param ex исключение не обработанное на контроллере
+     * @return ответ с ошибкой
+     */
+    @ExceptionHandler
+    public ResponseEntity<ApiResponse<Object>> handleServiceUnavailableException(ServiceUnavailableException ex) {
+        return new ResponseEntity<>(ApiResponse.error(ex.getMessage()), HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     /**
