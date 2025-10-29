@@ -19,7 +19,7 @@ public abstract class ApiController {
 
     /**
      * Обработка ошибок
-     * @param ex исключение не ообработанное на контроллере
+     * @param ex исключение не обработанное на контроллере
      * @return ответ с ошибкой
      */
     @ExceptionHandler
@@ -28,11 +28,21 @@ public abstract class ApiController {
         return new ResponseEntity<>(ApiResponse.error(ApiResponse.Error.builder().message(ex.getMessage()).build()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /**
+     * Обработка ошибок, не требующих логирования.
+     * @param ex исключение не обработанное на контроллере
+     * @return ответ с ошибкой
+     */
     @ExceptionHandler
     public ResponseEntity<ApiResponse<Object>> handleQuiteException(QuietException ex) {
         return new ResponseEntity<>(ApiResponse.error(ApiResponse.Error.builder().message(ex.getMessage()).build()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /**
+     * Обработка ошибки валидации {@link jakarta.validation.Valid}
+     * @param ex исключение валидации
+     * @return ответ с ошибкой
+     */
     @ExceptionHandler
     public ResponseEntity<ApiResponse<Object>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         StringBuilder errors = new StringBuilder();
