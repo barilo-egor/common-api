@@ -25,7 +25,7 @@ public abstract class ApiController {
     @ExceptionHandler
     public ResponseEntity<ApiResponse<Object>> handleRuntimeException(RuntimeException ex){
         log.error("Необработанная ошибка: ", ex);
-        return new ResponseEntity<>(ApiResponse.error(ApiResponse.Error.builder().message(ex.getMessage()).build()), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(ApiResponse.error("Internal server error. Contact support."), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -35,7 +35,7 @@ public abstract class ApiController {
      */
     @ExceptionHandler
     public ResponseEntity<ApiResponse<Object>> handleQuiteException(QuietException ex) {
-        return new ResponseEntity<>(ApiResponse.error(ApiResponse.Error.builder().message(ex.getMessage()).build()), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(ApiResponse.error(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -52,6 +52,6 @@ public abstract class ApiController {
         );
         errors.deleteCharAt(errors.length() - 1);
         errors.deleteCharAt(errors.length() - 1);
-        return new ResponseEntity<>(ApiResponse.error(ApiResponse.Error.builder().message(errors.toString()).build()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ApiResponse.error(errors.toString()), HttpStatus.BAD_REQUEST);
     }
 }

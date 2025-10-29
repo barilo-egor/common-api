@@ -102,6 +102,19 @@ public class ApiResponse<T> {
 
     /**
      * Метод для создания ответа с ошибкой
+     * @param message сообщение ошибки
+     * @return объект ответа с ошибкой
+     * @param <T> тип данных
+     */
+    public static <T> ApiResponse<T> error(String message) {
+        ApiResponse<T> apiResponse = new ApiResponse<>();
+        apiResponse.setSuccess(false);
+        apiResponse.setError(Error.builder().message(message).build());
+        return apiResponse;
+    }
+
+    /**
+     * Метод для создания ответа с ошибкой
      * @param code код ошибки
      * @param message сообщение ошибки
      * @return объект ответа с ошибкой
