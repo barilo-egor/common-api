@@ -5,11 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import tgb.cryptoexchange.exception.QuietException;
 import tgb.cryptoexchange.web.ApiResponse;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Базовый контроллер для REST API
@@ -53,5 +55,19 @@ public abstract class ApiController {
         errors.deleteCharAt(errors.length() - 1);
         errors.deleteCharAt(errors.length() - 1);
         return new ResponseEntity<>(ApiResponse.error(errors.toString()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ApiResponse<Object>> handle(MethodArgumentTypeMismatchException ex) {
+        String name = ex.getName();
+        Class<?> requiredType = ex.getRequiredType();
+        String type = (requiredType != null) ? requiredType.getSimpleName() : "unknown";
+        Object valueObj = ex.getValue();
+        String value = (valueObj != null) ? valueObj.toString() : "null";
+        String message = String.format(
+                "Parameter '%s' should be of type '%s', but value '%s' is invalid",
+                name, type, value
+        );
+        return new ResponseEntity<>(ApiResponse.error(message), HttpStatus.BAD_REQUEST);
     }
 }
