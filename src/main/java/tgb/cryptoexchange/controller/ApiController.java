@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import tgb.cryptoexchange.exception.QuietException;
 import tgb.cryptoexchange.web.ApiResponse;
 
 import java.util.HashMap;
@@ -18,15 +19,30 @@ public abstract class ApiController {
 
     /**
      * Обработка ошибок
-     * @param ex исключение не ообработанное на контроллере
+     * @param ex исключение не обработанное на контроллере
      * @return ответ с ошибкой
      */
     @ExceptionHandler
-    public ResponseEntity<ApiResponse<Object>> handleException(Exception ex){
+    public ResponseEntity<ApiResponse<Object>> handleRuntimeException(RuntimeException ex){
         log.error("Необработанная ошибка: ", ex);
         return new ResponseEntity<>(ApiResponse.error(ApiResponse.Error.builder().message(ex.getMessage()).build()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /**
+     * Обработка ошибок, не требующих логирования.
+     * @param ex исключение не обработанное на контроллере
+     * @return ответ с ошибкой
+     */
+    @ExceptionHandler
+    public ResponseEntity<ApiResponse<Object>> handleQuiteException(QuietException ex) {
+        return new ResponseEntity<>(ApiResponse.error(ApiResponse.Error.builder().message(ex.getMessage()).build()), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    /**
+     * Обработка ошибки валидации {@link jakarta.validation.Valid}
+     * @param ex исключение валидации
+     * @return ответ с ошибкой
+     */
     @ExceptionHandler
     public ResponseEntity<ApiResponse<Object>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         StringBuilder errors = new StringBuilder();
