@@ -48,7 +48,7 @@ public abstract class ApiController {
      * @return ответ с ошибкой
      */
     @ExceptionHandler
-    public ResponseEntity<ApiResponse<Object>> handleServiceUnavailableException(BadRequestException ex) {
+    public ResponseEntity<ApiResponse<Object>> handleBadRequestException(BadRequestException ex) {
         return new ResponseEntity<>(ApiResponse.error(ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
