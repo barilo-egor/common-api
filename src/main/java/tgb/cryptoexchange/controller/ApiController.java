@@ -9,6 +9,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import tgb.cryptoexchange.exception.BadRequestException;
 import tgb.cryptoexchange.exception.QuietException;
 import tgb.cryptoexchange.exception.ServiceUnavailableException;
+import tgb.cryptoexchange.exception.UnprocessableEntityException;
 import tgb.cryptoexchange.web.ApiResponse;
 
 import java.util.HashMap;
@@ -48,8 +49,18 @@ public abstract class ApiController {
      * @return ответ с ошибкой
      */
     @ExceptionHandler
-    public ResponseEntity<ApiResponse<Object>> handleServiceUnavailableException(BadRequestException ex) {
+    public ResponseEntity<ApiResponse<Object>> handleBadRequestException(BadRequestException ex) {
         return new ResponseEntity<>(ApiResponse.error(ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * Обработка ошибок с возвращением 400 статуса.
+     * @param ex исключение не обработанное на контроллере
+     * @return ответ с ошибкой
+     */
+    @ExceptionHandler
+    public ResponseEntity<ApiResponse<Object>> handleUnprocessableEntityException(UnprocessableEntityException ex) {
+        return new ResponseEntity<>(ApiResponse.error(ex.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     /**
