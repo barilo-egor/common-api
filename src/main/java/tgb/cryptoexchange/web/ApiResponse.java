@@ -60,7 +60,8 @@ public class ApiResponse<T> {
         @Getter
         public enum ErrorCode {
             ENTITY_NOT_FOUND(0),
-            NON_UNIQUE_RESULT(1);
+            NON_UNIQUE_RESULT(1),
+            ALREADY_EXIST(2);
 
             private final int code;
 
